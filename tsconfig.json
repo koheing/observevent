@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "CommonJS",
     "target": "ESNext",
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -9,7 +9,6 @@
     "allowJs": true,
     "checkJs": true,
     "sourceMap": true,
-    "moduleResolution": "node",
     "outDir": "./lib"
   },
   "include": ["src"],

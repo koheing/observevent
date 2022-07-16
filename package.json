@@ -9,7 +9,6 @@
   "module": "lib/index.m.js",
   "source": "src/index.ts",
   "scripts": {
-    "build": "tsc",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "bundle": "microbundle build -f cjs,esm",

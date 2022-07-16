@@ -4,3 +4,4 @@ coverage/
 .prettierrc.json
 .eslintrc.json
 vitest.config.ts
+src/

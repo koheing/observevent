@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "ESNext",
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "allowJs": true,
+    "checkJs": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "outDir": "./lib"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "__tests__"]
+}

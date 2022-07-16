@@ -2,15 +2,18 @@
   "name": "observevent",
   "version": "0.1.0",
   "description": "observe event",
+  "homepage": "https://github.com/koheing/observevent",
+  "bugs": "https://github.com/koheing/observevent/issues",
   "type": "module",
-  "main": "./lib/index.cjs",
-	"module": "./lib/index.module.mjs",
-  "types": "./lib/index.d.ts",
+  "types": "lib/index.d.ts",
+  "main": "lib/index.js",
+  "module": "lib/index.m.js",
   "source": "src/index.ts",
   "scripts": {
+    "build": "tsc",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "build": "microbundle",
+    "bundle": "microbundle build -f cjs,esm",
     "format": "prettier -w ./src",
     "lint": "prettier --check ./src && eslint ./src "
   },
@@ -27,5 +30,10 @@
     "prettier": "^2.7.1",
     "typescript": "^4.7.4",
     "vitest": "^0.16.0"
-  }
+  },
+  "keywords": [
+    "observe",
+    "observer",
+    "observer pattern"
+  ]
 }

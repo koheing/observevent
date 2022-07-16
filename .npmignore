@@ -1,0 +1,6 @@
+__tests__/
+.github/
+coverage/
+.prettierrc.json
+.eslintrc.json
+vitest.config.ts

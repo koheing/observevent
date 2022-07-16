@@ -6,7 +6,7 @@ import { Value, Subscriber, Unsubscriber } from '../types'
  * @example
  *   ```ts
  *   const subject = subjectify(1)
- *   const unsubscribe = exclude(subject, (value) => value > 2)
+ *   const unsubscribe = select(subject, (value) => value > 2)
  *     .subscribe(console.log)
  *
  *   subject.notify((value) => value + 1)

@@ -2,35 +2,31 @@ import type { Observer } from '../models'
 import type { Value, Subscriber, Unsubscriber } from '../types'
 
 /**
- * Do not subscribe if condition is met.
+ * Change value to tuple of current and previous values.
  * @example
  *   ```ts
  *   const subject = subjectify(1)
- *   exclude(subject, (value) => value > 2)
- *     .subscribe(console.log)
+ *   diff(subject).subscribe(console.log)
  *
  *   subject.notify((value) => value + 1)
  *   subject.notify((value) => value + 1)
  *   ```
  *   ----
  *   outputs:
- *   "1"
- *   "2"
+ *   ["1",undefined]
+ *   ["2","1"]
+ *   ["3","2"]
  */
-export function exclude<T, U extends boolean = false>(
-  observerOrSubject: Observer<T, U>,
-  selector: (value: Value<T, U>) => boolean
-): Observer<T, U> {
+export function diff<T, U extends boolean = false>(
+  observerOrSubject: Observer<T, U>
+): Observer<Value<T, true>, U> {
   let older: Value<T, U>
   return {
-    subscribe(subscriber: Subscriber<T, U>): Unsubscriber {
+    subscribe(subscriber: Subscriber<Value<T, true>, U>): Unsubscriber {
       const unsubscriber = observerOrSubject.subscribe((it) => {
-        if (selector(it)) return
-        const value = observerOrSubject.diff
-          ? ([it[0], older] as Value<T, U>)
-          : it
+        const value = [it, older] as Value<Value<T, true>, U>
         subscriber(value)
-        older = it[0]
+        older = it
       })
       return unsubscriber
     },

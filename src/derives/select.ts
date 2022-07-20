@@ -22,7 +22,7 @@ export function select<T, U extends boolean = false>(
   observerOrSubject: Observer<T, U>,
   selector: (value: Value<T, U>) => boolean
 ): Observer<T, U> {
-  let older: T
+  let older: Value<T, U>
   return {
     subscribe(subscriber: Subscriber<T, U>): Unsubscriber {
       const unsubscriber = observerOrSubject.subscribe((it) => {

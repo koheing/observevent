@@ -19,14 +19,14 @@ describe('exclude', () => {
     food.notify('apple')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith('peach')
-    expect(sFn).toBeCalledWith('berry')
+    expect(sFn).toBeCalledWith('peach', undefined)
+    expect(sFn).toBeCalledWith('berry', 'peach')
   })
 
   it('exclude target with diff', () => {
-    const food = subjectify('apple', { diff: true })
-    function isAppleOrOrange([newer]: [string, string]) {
-      return ['apple', 'orange'].includes(newer)
+    const food = subjectify('apple')
+    function isAppleOrOrange(newValue: string) {
+      return ['apple', 'orange'].includes(newValue)
     }
 
     const appleOrOrange = exclude(food, isAppleOrOrange)
@@ -40,7 +40,7 @@ describe('exclude', () => {
     food.notify('apple')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith(['peach', undefined])
-    expect(sFn).toBeCalledWith(['berry', 'peach'])
+    expect(sFn).toBeCalledWith('peach', undefined)
+    expect(sFn).toBeCalledWith('berry', 'peach')
   })
 })

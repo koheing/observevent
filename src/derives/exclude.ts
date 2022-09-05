@@ -1,5 +1,5 @@
 import type { Observer } from '../models'
-import type { Value, Subscriber, Unsubscriber } from '../types'
+import type { Subscriber, Unsubscriber } from '../types'
 
 /**
  * Do not subscribe if condition is met.
@@ -17,25 +17,19 @@ import type { Value, Subscriber, Unsubscriber } from '../types'
  *   "1"
  *   "2"
  */
-export function exclude<T, U extends boolean = false>(
-  observerOrSubject: Observer<T, U>,
-  selector: (value: Value<T, U>) => boolean
-): Observer<T, U> {
-  let older: Value<T, U>
+export function exclude<T>(
+  observerOrSubject: Observer<T>,
+  selector: (newValue: T, oldValue: T) => boolean
+): Observer<T> {
+  let oldValue: T
   return {
-    subscribe(subscriber: Subscriber<T, U>): Unsubscriber {
-      const unsubscriber = observerOrSubject.subscribe((it) => {
-        if (selector(it)) return
-        const value = observerOrSubject.diff
-          ? ([it[0], older] as Value<T, U>)
-          : it
-        subscriber(value)
-        older = it[0]
+    subscribe(subscriber: Subscriber<T>): Unsubscriber {
+      const unsubscriber = observerOrSubject.subscribe((nV, oV) => {
+        if (selector(nV, oV)) return
+        subscriber(nV, oldValue)
+        oldValue = nV
       })
       return unsubscriber
-    },
-    get diff(): boolean {
-      return observerOrSubject.diff
     },
   }
 }

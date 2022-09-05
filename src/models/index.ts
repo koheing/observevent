@@ -1,11 +1,10 @@
 import type { Subscriber, Unsubscriber, ValueOrUpdator } from '../types'
 
-export interface Observer<T, U extends boolean> {
-  subscribe: (subscriber: Subscriber<T, U>) => Unsubscriber
-  readonly diff: boolean
+export interface Observer<T> {
+  subscribe: (subscriber: Subscriber<T>) => Unsubscriber
 }
 
-export interface Subject<T, U extends boolean> extends Observer<T, U> {
+export interface Subject<T> extends Observer<T> {
   readonly subscribed: boolean
   notify: (valueOrUpdator: ValueOrUpdator<T>) => void
 }

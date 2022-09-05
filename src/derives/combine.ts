@@ -29,13 +29,11 @@ import type {
  * [2,"b"]
  */
 export function combine<
-  T extends Tuple<Observer<unknown, boolean>>,
-  U extends Observees<T>,
-  V extends boolean = false
->(observerOrSubjects: T, options: Options<V> = {}) {
+  T extends Tuple<Observer<unknown>>,
+  U extends Observees<T>
+>(observerOrSubjects: T, options: Options = {}) {
   const state = [] as unknown as U
-  state.length = observerOrSubjects.length
-  const store = subjectify<U, V>(state, options)
+  const store = subjectify<U>(state, options)
   const unsubscribers: Unsubscriber[] = []
 
   observerOrSubjects.forEach((it, index) => {
@@ -48,14 +46,11 @@ export function combine<
   })
 
   return {
-    subscribe(subscriber: Subscriber<U, V>): Unsubscriber {
-      store.subscribe(subscriber as Subscriber<U, boolean>)
+    subscribe(subscriber: Subscriber<U>): Unsubscriber {
+      store.subscribe(subscriber)
       return () => {
         unsubscribers.forEach((it) => it())
       }
     },
-    get diff(): boolean {
-      return options.diff ?? false
-    },
-  } as unknown as V extends true ? Observer<U, true> : Observer<U, false>
+  } as Observer<U>
 }

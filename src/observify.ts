@@ -28,19 +28,17 @@ export type Trigger<T> = (
  *   ""
  *   "apple"
  */
-export function observify<T, U extends boolean = false>(
+export function observify<T>(
   init: T,
   trigger: Trigger<T>,
-  options: Options<U> = {}
+  options: Options = {}
 ) {
   const subject = subjectify(init, options)
   const customUnsubscriber = trigger(subject.notify)
 
   return {
-    subscribe(subscriber: Subscriber<T, U>): Unsubscriber {
-      const unsubscriber = subject.subscribe(
-        subscriber as Subscriber<T, boolean>
-      )
+    subscribe(subscriber: Subscriber<T>): Unsubscriber {
+      const unsubscriber = subject.subscribe(subscriber)
 
       return () => {
         unsubscriber()
@@ -49,8 +47,5 @@ export function observify<T, U extends boolean = false>(
         }
       }
     },
-    get diff() {
-      return options.diff ?? false
-    },
-  } as unknown as U extends true ? Observer<T, true> : Observer<T, false>
+  } as Observer<T>
 }

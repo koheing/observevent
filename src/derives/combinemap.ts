@@ -1,5 +1,5 @@
 import type { Observer } from '../models'
-import type { Observees, Options, Tuple, Value } from '../types'
+import type { Observees, Options, Tuple } from '../types'
 import { combine } from './combine'
 import { map } from './map'
 
@@ -23,15 +23,14 @@ import { map } from './map'
  * "2,b"
  */
 export function combineMap<
-  T extends Tuple<Observer<unknown, boolean>>,
+  T extends Tuple<Observer<unknown>>,
   U extends Observees<T>,
-  V,
-  W extends boolean = false
+  V
 >(
   observerOrSubjects: T,
-  mapper: (values: Value<U, W>) => V,
-  options: Options<W> = {}
-): Observer<V, W> {
-  const c = combine(observerOrSubjects, options) as Observer<U, W>
-  return map<U, W, V>(c, mapper)
+  mapper: (newValue: U, oldValue: U) => V,
+  options: Options = {}
+): Observer<V> {
+  const c = combine(observerOrSubjects, options)
+  return map(c, mapper)
 }

@@ -15,8 +15,8 @@ describe('combine', () => {
     unsubscribe()
 
     expect(sFn).toBeCalledTimes(3)
-    expect(sFn).toBeCalledWith(['apple', 1])
-    expect(sFn).toBeCalledWith(['apple', 2])
-    expect(sFn).toBeCalledWith(['apple', null])
+    expect(sFn).toBeCalledWith(['apple', 1], undefined)
+    expect(sFn).toBeCalledWith(['apple', 2], ['apple', 1])
+    expect(sFn).toBeCalledWith(['apple', null], ['apple', 2])
   })
 })

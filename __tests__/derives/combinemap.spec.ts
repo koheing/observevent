@@ -14,7 +14,7 @@ describe('conbineMap', () => {
     food.notify('apple')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith({ food: 'apple', kind: 'pie' })
-    expect(sFn).toBeCalledWith({ food: 'meat', kind: `pie` })
+    expect(sFn).toBeCalledWith({ food: 'apple', kind: 'pie' }, undefined)
+    expect(sFn).toBeCalledWith({ food: 'meat', kind: `pie` }, { food: 'apple', kind: 'pie' })
   })
 })

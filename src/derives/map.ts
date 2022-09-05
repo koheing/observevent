@@ -1,5 +1,5 @@
 import type { Observer } from '../models'
-import type { Value, Subscriber, Unsubscriber } from '../types'
+import type { Subscriber, Unsubscriber } from '../types'
 
 /**
  * Map subscribed value to something
@@ -21,19 +21,19 @@ import type { Value, Subscriber, Unsubscriber } from '../types'
  *   "2"
  *   "3"
  */
-export function map<T, U extends boolean, V>(
-  observerOrSubject: Observer<T, U>,
-  mapper: (value: Value<T, U>) => V
-): Observer<V, U> {
+export function map<T, V>(
+  observerOrSubject: Observer<T>,
+  mapper: (newValue: T, oldValue: T) => V
+): Observer<V> {
+  let oldValue: V
   return {
-    subscribe(subscriber: Subscriber<V, U>): Unsubscriber {
-      const unsubscriber = observerOrSubject.subscribe((it) =>
-        subscriber(mapper(it) as Value<V, U>)
-      )
+    subscribe(subscriber: Subscriber<V>): Unsubscriber {
+      const unsubscriber = observerOrSubject.subscribe((nV, oV) => {
+        const newValue = mapper(nV, oV)
+        subscriber(newValue, oldValue)
+        oldValue = newValue
+      })
       return unsubscriber
-    },
-    get diff(): boolean {
-      return observerOrSubject.diff
     },
   }
 }

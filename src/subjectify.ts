@@ -1,5 +1,5 @@
 import type { Subject } from './models'
-import type { Subscriber, Value, Options } from './types'
+import type { Subscriber, Options } from './types'
 
 type State<T> = { value: T }
 
@@ -20,27 +20,22 @@ type State<T> = { value: T }
  *   "2"
  *   "3"
  */
-export function subjectify<T, U extends boolean = false>(
-  init: T,
-  options: Options<U> = {}
-) {
+export function subjectify<T>(init: T, options: Options = {}) {
   const state = withHook({
     value: init,
   })
-  const diff = options.diff ?? (false as U)
   const logger = options.logger ?? console
   const logging = options.logging ?? false
   const immediate = options.immediate ?? true
-  let subscribers: Subscriber<T, U>[] = []
-  function notifyAll<V extends Value<T, U>>(value: V): void {
-    subscribers.forEach((it) => it(value))
+  let subscribers: Subscriber<T>[] = []
+  function notifyAll(newValue: T, oldValue: T): void {
+    subscribers.forEach((it) => it(newValue, oldValue))
   }
 
   function withHook(state: State<T>): State<T> {
     return new Proxy(state, {
       set: (target, key: keyof typeof state, value: T) => {
-        const v = (diff ? [value, target[key]] : value) as Value<T, U>
-        notifyAll(v)
+        notifyAll(value, target[key])
         logging && logger.info({ before: target[key], after: value })
         target[key] = value
         return true
@@ -63,21 +58,17 @@ export function subjectify<T, U extends boolean = false>(
     get subscribed(): boolean {
       return subscribers.length > 0
     },
-    get diff(): boolean {
-      return options.diff ?? false
-    },
     /**
      * Update subject
      */
     notify,
-    subscribe(subscriber: Subscriber<T, U>) {
-      const v = (diff ? [state.value, undefined] : state.value) as Value<T, U>
-      immediate && subscriber(v)
+    subscribe(subscriber: Subscriber<T>) {
+      immediate && subscriber(state.value, undefined)
       subscribers.push(subscriber)
 
       return () => {
         subscribers = subscribers.filter((it) => it !== subscriber)
       }
     },
-  } as unknown as U extends true ? Subject<T, true> : Subject<T, false>
+  } as Subject<T>
 }

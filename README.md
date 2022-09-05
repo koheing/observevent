@@ -13,7 +13,9 @@ npm i observevent
 import { subjectify } from 'observevent'
 
 const food = subjectify('')
-const unsubscribe = food.subscribe(console.log)
+const unsubscribe = food.subscribe((newValue, oldValue) => console.log(newValue, oldValue))
+// or 
+// food.subscribe((newValue) => console.log(newValue))
 
 food.notify('apple')
 food.notify((it) => it + ' pie')
@@ -22,9 +24,9 @@ unsubscribe()
 
 // Output
 // ----------
-// ''
-// 'apple'
-// 'apple pie'
+// '', undefined
+// 'apple, '
+// 'apple pie, apple'
 ```
 
 ### `observify`
@@ -55,33 +57,12 @@ unsubscribe()
 
 // Output
 // ----------
-// '[food] ["", undefined]'
-// '[food] ["apple", ""]'
+// '[food] "", undefined'
+// '[food] "", apple'
 ```
 
 ## Options
 `observify` and `subjectify` and `combine` and `combineMap` have the following options:
-
-### `diff`
-Setting `diff` to `true` will notify you of the values ​​before and after the change.  
-Default value is `false`.  
-```ts
-import { subjectify } from 'observevent'
-
-const food = subjectify('', { diff: true })
-const unsubscribe = food.subscribe((it) => console.log(it))
-
-food.notify('apple')
-food.notify((it) => it + ' pie')
-
-unsubscribe()
-
-// Output
-// ----------
-// ['', undefined]
-// ['apple', '']
-// ['apple pie', 'apple']
-```
 
 ### `logging`
 Setting `logging` to `true` will output changelog.  
@@ -135,7 +116,7 @@ Default value is `true`.
 import { subjectify } from 'observevent'
 
 const food = subjectify('', { immediate: false })
-const unsubscribe = food.subscribe(console.log)
+const unsubscribe = food.subscribe((it) => console.log(it))
 
 food.notify('apple')
 food.notify((it) => it + ' pie')
@@ -154,4 +135,3 @@ unsubscribe()
 - [exclude](https://github.com/koheing/observevent/blob/main/src/derives/exclude.ts)
 - [combine](https://github.com/koheing/observevent/blob/main/src/derives/combine.ts)
 - [combineMap](https://github.com/koheing/observevent/blob/main/src/derives/combinemap.ts)
-- [diff](https://github.com/koheing/observevent/blob/main/src/derives/diff.ts)

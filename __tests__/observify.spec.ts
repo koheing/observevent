@@ -18,8 +18,8 @@ describe('observify', () => {
     emitter.emit('value', 2)
 
     expect(sFn1).toBeCalledTimes(2)
-    expect(sFn1).toBeCalledWith(1)
-    expect(sFn1).toBeCalledWith(2)
+    expect(sFn1).toBeCalledWith(1, undefined)
+    expect(sFn1).toBeCalledWith(2, 1)
   })
 
   it('unsubscriber called on no subscribers', () => {
@@ -44,12 +44,12 @@ describe('observify', () => {
     expect(listener).toBeCalledTimes(1)
 
     expect(sFn1).toBeCalledTimes(2)
-    expect(sFn1).toBeCalledWith(1)
-    expect(sFn1).toBeCalledWith(2)
+    expect(sFn1).toBeCalledWith(1, undefined)
+    expect(sFn1).toBeCalledWith(2, 1)
 
     expect(sFn2).toBeCalledTimes(3)
-    expect(sFn2).toBeCalledWith(1)
-    expect(sFn2).toBeCalledWith(2)
-    expect(sFn2).toBeCalledWith(3)
+    expect(sFn2).toBeCalledWith(1, undefined)
+    expect(sFn2).toBeCalledWith(2, 1)
+    expect(sFn2).toBeCalledWith(3, 2)
   })
 })

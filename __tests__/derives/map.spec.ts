@@ -14,7 +14,7 @@ describe('map', () => {
     food.notify('berry')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith('apple pie')
-    expect(sFn).toBeCalledWith('peach pie')
+    expect(sFn).toBeCalledWith('apple pie', undefined)
+    expect(sFn).toBeCalledWith('peach pie', 'apple pie')
   })
 })

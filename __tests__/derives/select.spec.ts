@@ -19,14 +19,14 @@ describe('select', () => {
     food.notify('apple')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith('apple')
-    expect(sFn).toBeCalledWith('orange')
+    expect(sFn).toBeCalledWith('apple', undefined)
+    expect(sFn).toBeCalledWith('orange', 'apple')
   })
 
   it('select target with diff', () => {
-    const food = subjectify('apple', { diff: true })
-    function isAppleOrOrange([newer]: [string, string]) {
-      return ['apple', 'orange'].includes(newer)
+    const food = subjectify('apple')
+    function isAppleOrOrange(newValue: string) {
+      return ['apple', 'orange'].includes(newValue)
     }
 
     const appleOrOrange = select(food, isAppleOrOrange)
@@ -40,7 +40,7 @@ describe('select', () => {
     food.notify('apple')
 
     expect(sFn).toBeCalledTimes(2)
-    expect(sFn).toBeCalledWith(['apple', undefined])
-    expect(sFn).toBeCalledWith(['orange', 'apple'])
+    expect(sFn).toBeCalledWith('apple', undefined)
+    expect(sFn).toBeCalledWith('orange', 'apple')
   })
 })

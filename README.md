@@ -1,4 +1,4 @@
-# Observent
+# Observevent
 Event Observer inspired by [svelte/store](https://github.com/sveltejs/svelte) and [rxjs](https://github.com/ReactiveX/rxjs)
 
 ## Installation
@@ -47,7 +47,7 @@ function isPie(food: string): boolean {
 const food = observify('', (trigger) => {
   emitter.on('food', trigger)
   return () => emitter.removeAllListener('food')
-}, /** Option **/  { logging: true, logger, diff: true })
+}, /** Option **/  { logging: true, logger })
 
 const unsubscribe = select(food, isPie).subscribe((it) => it)
 

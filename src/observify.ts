@@ -32,7 +32,7 @@ export function observify<T>(
   init: T,
   trigger: Trigger<T>,
   options: Options = {}
-) {
+): Observer<T> {
   const subject = subjectify(init, options)
   const customUnsubscriber = trigger(subject.notify)
 
@@ -47,5 +47,5 @@ export function observify<T>(
         }
       }
     },
-  } as Observer<T>
+  }
 }

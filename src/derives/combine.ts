@@ -31,7 +31,7 @@ import type {
 export function combine<
   T extends Tuple<Observer<unknown>>,
   U extends Observees<T>
->(observerOrSubjects: T, options: Options = {}) {
+>(observerOrSubjects: T, options: Options = {}): Observer<U> {
   const state = [] as unknown as U
   const store = subjectify<U>(state, options)
   const unsubscribers: Unsubscriber[] = []
@@ -52,5 +52,5 @@ export function combine<
         unsubscribers.forEach((it) => it())
       }
     },
-  } as Observer<U>
+  }
 }

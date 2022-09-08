@@ -20,7 +20,7 @@ type State<T> = { value: T }
  *   "2"
  *   "3"
  */
-export function subjectify<T>(init: T, options: Options = {}) {
+export function subjectify<T>(init: T, options: Options = {}): Subject<T> {
   const state = withHook({
     value: init,
   })
@@ -70,5 +70,5 @@ export function subjectify<T>(init: T, options: Options = {}) {
         subscribers = subscribers.filter((it) => it !== subscriber)
       }
     },
-  } as Subject<T>
+  }
 }
